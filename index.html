@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Frontend Mentor | Interactive pricing component</title>
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+<section>
+  <div class="title">
+    <h1>Simple, traffic-based pricing</h1>
+    <p>Sign-up for our 30-day trial. No credit card required.</p>
+  </div> 
+  <main>
+    <div class="stats">
+      <div class="pageviews">
+        <p id="nbrPageviews"></p>
+        <p>k Pageviews</p>
+      </div>
+      <div class="price">
+        <h2>$</h2>
+        <p id="price"></p> 
+        <p>/month</p>
+      </div>
+    </div>
+    <div class="progress-bar" id="progressBar">
+      <div class="slider" id="slider"><img class="icon-slider" src="images/icon-slider.svg" alt="icon-slider"></div> 
+    </div>
+
+    <div class="billing">
+      <p>Monthly Billing</p>
+      <div id="toggleIcon" class="toggle-icon">
+        <div class="toggle-circle"></div>
+      </div>
+      <p>Yearly Billing</p>
+      <p class="discount">25% discount</p>
+    </div>
+  <hr>
+    <div class="list">
+      <ul>
+        <li><img class="icon-check" src="images/icon-check.svg" alt="icon-check">Unlimited websites</li>
+        <li><img class="icon-check" src="images/icon-check.svg" alt="icon-check">100% data ownership</li>
+        <li><img class="icon-check" src="images/icon-check.svg" alt="icon-check">Email reports</li>
+      </ul> 
+      <a class="cta" href="#">Start my trial</a>
+    </div>
+  </main>
+</section>
+
+<div class="attribution">
+  Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+  Coded by <a href="#">Léa CHIDAS</a>.
+</div>
+</body>
+</html>
