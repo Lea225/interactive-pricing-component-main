@@ -1,47 +1,82 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const progressBar = document.querySelector('.progress-bar');
-    const slider = document.querySelector('.slider');
-    const nbrPageviews = document.getElementById('nbrPageviews');
-    const price = document.getElementById('price');
+  const progressBar = document.querySelector('.progress-bar');
+  const slider = document.querySelector('input[type="range"]');
+  const nbrPageviews = document.getElementById('nbrPageviews');
+  const price = document.getElementById('price');
+  const sliderThumb = document.querySelector('input[type="range"]::-webkit-slider-thumb');
+  const toggleIcon = document.getElementById('toggleIcon');
+  const dateText = document.querySelector('.date');
 
-    // Vérifier si les éléments sont correctement sélectionnés
-    if (!nbrPageviews || !price) {
-        console.error("Erreur : Les éléments nbrPageviews et price ne sont pas correctement sélectionnés.");
-        return;
+  // Définir les plages de pages vues et les tarifs correspondants
+  const pageViews = ['10K', '50K', '100K', '500K', '1M']; // Plages de pageviews ajustées
+  const monthlyPrices = [8, 12, 16, 24, 32]; // Prix mensuels ajustés
+  const yearlyPrices = monthlyPrices.map(price => price * 0.75); // Prix annuels calculés avec une réduction de 25%
+
+  // Fonction pour mettre à jour les offres en fonction de la position du slider
+  function updateOffers() {
+    const progress = slider.value;
+    const index = Math.floor(progress / 25);
+    const isYearly = toggleIcon.classList.contains('active');
+
+    nbrPageviews.textContent = `${pageViews[index]}`;
+
+    if (isYearly) {
+      price.textContent = `$${yearlyPrices[index]}.00`;
+      dateText.textContent = '/year';
+    } else {
+      price.textContent = `$${monthlyPrices[index]}.00`;
+      dateText.textContent = '/month';
     }
+  }
 
-    // Définir les plages de pages vues et les tarifs correspondants
-    const pageViews = [10, 50, 100, 500, 1000];
-    const prices = [8, 12, 16, 24, 36];
+  // Écouter les événements de changement sur le slider
+  slider.addEventListener('input', () => {
+    updateOffers(); // Mettre à jour les offres lorsque la valeur du slider change
+  });
 
-    // Fonction pour mettre à jour les offres en fonction de la position de l'icône slider
-    function updateOffers() {
-        const progress = (slider.offsetLeft / (progressBar.offsetWidth - slider.offsetWidth)) * 100;
+  // Mettre à jour les offres initiales lors du chargement de la page
+  updateOffers();
 
-        // Trouver l'indice correspondant dans le tableau des plages de pages vues
-        let index = Math.floor((progress / 100) * (pageViews.length - 1));
+  // Écouter les événements de clic sur l'icône de toogle
+  toggleIcon.addEventListener('click', function() {
+    toggleIcon.classList.toggle('active');
+    updateOffers(); // Mettre à jour les offres lorsque le mode annuel/mensuel est changé
+  });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  const slider = document.querySelector('.progress-bar');
+  const customCursor = document.querySelector('.custom-cursor');
 
-        // Mettre à jour le nombre de pages vues et le prix affiché
-        nbrPageviews.textContent = `${pageViews[index] || ''}`;
-        price.textContent = `${prices[index] || ''}`;
-    }
+  // Fonction pour mettre à jour la position de l'icône slider
+  function updateSliderIconPosition(event) {
+    const rect = slider.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const percentage = (offsetX / rect.width) * 100;
+    customCursor.style.left = `calc(${percentage}% - 12px)`; // 12px est la moitié de la largeur de l'icône
+  }
 
-    // Positionner l'icône slider sur le tarif 100/16 au début
-    slider.style.left = `calc(${100 / pageViews[2]}% - ${slider.offsetWidth / 2}px)`;
-    updateOffers(); // Mettre à jour les offres initiales
+  // Écouter les événements de clic sur l'input
+  slider.addEventListener('click', function(event) {
+    updateSliderIconPosition(event);
+  });
 
-    // Écouter les événements de glissement sur l'icône slider
-    let isDown = false;
-    slider.addEventListener('mousedown', (e) => {
-        isDown = true;
-    });
-    slider.addEventListener('mouseup', () => isDown = false);
-    progressBar.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        const newX = e.pageX - progressBar.offsetLeft - slider.offsetWidth / 2;
-        if (newX >= 0 && newX <= progressBar.offsetWidth - slider.offsetWidth) {
-            slider.style.left = `${newX}px`;
-            updateOffers();
-        }
-    });
+  // Mettre à jour la position initiale de l'icône slider
+  updateSliderIconPosition({ clientX: slider.getBoundingClientRect().left });
+});
+document.addEventListener('DOMContentLoaded', function () {
+  const progressBar = document.querySelector('.progress-bar');
+
+  // Fonction pour mettre à jour la couleur de la barre de progression en fonction de la valeur du slider
+  function updateProgressBarColor() {
+      const value = progressBar.value;
+      const percentage = value / progressBar.max * 100;
+      const fillStyle = `linear-gradient(to right, hsl(174, 77%, 80%) ${percentage}%, hsl(224, 65%, 95%) ${percentage}%)`;
+      progressBar.style.background = fillStyle;
+  }
+
+  // Écouter les événements de changement sur le slider
+  progressBar.addEventListener('input', updateProgressBarColor);
+
+  // Mettre à jour la couleur de la barre de progression initiale
+  updateProgressBarColor();
 });
